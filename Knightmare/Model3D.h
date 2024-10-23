@@ -13,7 +13,6 @@ public:
 	~Model3D();
 
 	bool SetCamera(Camera* camera);
-	void LoadModel(Model &model, Texture2D &texture);
 	virtual void Input();
 	virtual bool Initialize(Utilities* utilities);
 	virtual bool BeginRun();
@@ -22,6 +21,7 @@ public:
 	virtual void Draw3D();
 
 	//void AddChild(Model3D* child);
+	void LoadModel(Model &model, Texture2D &texture);
 	void SetModel(Model &model, float scale);
 	void SetModel(Model &model);
 	void SetModelCopy(Model model, float scale);

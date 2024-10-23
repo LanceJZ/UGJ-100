@@ -14,7 +14,7 @@ void Enemy::SetPlayer(ThePlayer* player)
 	Player = player;
 }
 
-void Enemy::SetShotModel(LineModelPoints model)
+void Enemy::SetShotModel(Model model)
 {
 	ShotModel = model;
 }
@@ -36,14 +36,14 @@ void Enemy::SetParticleManager(ParticleManager* particleManager)
 
 bool Enemy::Initialize(Utilities* utilities)
 {
-	LineModel::Initialize(utilities);
+	Model3D::Initialize(utilities);
 
 	return false;
 }
 
 bool Enemy::BeginRun()
 {
-	LineModel::BeginRun();
+	Model3D::BeginRun();
 
 
 	return false;
@@ -51,14 +51,14 @@ bool Enemy::BeginRun()
 
 void Enemy::Update(float deltaTime)
 {
-	LineModel::Update(deltaTime);
+	Model3D::Update(deltaTime);
 
 	if (!Player->GameOver && !IsSoundPlaying(OnSound)) PlaySound(OnSound);
 }
 
 void Enemy::Draw3D()
 {
-	LineModel::Draw3D();
+	Model3D::Draw3D();
 }
 
 void Enemy::CheckShotsHitPlayer()
@@ -147,7 +147,7 @@ void Enemy::Shoot()
 	if (spawnNew)
 	{
 		Shots.push_back(DBG_NEW Shot());
-		Managers.EM.AddLineModel(Shots[spawnNumber], ShotModel);
+		Managers.EM.AddModel3D(Shots[spawnNumber], ShotModel);
 		Shots[spawnNumber]->BeginRun();
 	}
 
@@ -174,7 +174,7 @@ void Enemy::Shoot(Vector3 velocity)
 	if (spawnNew)
 	{
 		Shots.push_back(DBG_NEW Shot());
-		Managers.EM.AddLineModel(Shots[spawnNumber], ShotModel);
+		Managers.EM.AddModel3D(Shots[spawnNumber], ShotModel);
 		Shots[spawnNumber]->BeginRun();
 	}
 

@@ -2,11 +2,17 @@
 
 TheBackground::TheBackground()
 {
-	for (int i = 0; i < 1200; i++)
+	int columns = 40;
+	int rows = 40;
+
+	for (int i = 0; i < columns * rows; i++)
 	{
 		FloorSquares.push_back(DBG_NEW Model3D());
 		Managers.EM.AddModel3D(FloorSquares.back());
 	}
+
+	MAP_WIDTH = columns;
+	MAP_HEIGHT = rows;
 }
 
 TheBackground::~TheBackground()
@@ -26,12 +32,6 @@ void TheBackground::SetWallModel(Model model)
 bool TheBackground::Initialize(Utilities* utilities)
 {
 	Common::Initialize(utilities);
-
-	int columns = 40;
-	int rows = 30;
-
-	MAP_WIDTH = columns;
-	MAP_HEIGHT = rows;
 
 	return false;
 }
@@ -112,11 +112,12 @@ std::vector<std::vector<TileType>> TheBackground::GenerateMap()
 
 void TheBackground::BuildMap()
 {
-	Map = GenerateMap();
-	float tileSize = 64.0f;
 	int t = 0;
+	float tileSize = 64.0f;
 	float width = FieldSize.x / 2.0f;
 	float height = FieldSize.y / 2.0f;
+
+	Map = GenerateMap();
 
 	for (const auto& row : Map)
 	{
@@ -130,11 +131,27 @@ void TheBackground::BuildMap()
 			{ -width + (t * tileSize) + (tileSize / 2.0f),
 				-height + (r * tileSize) + (tileSize / 2.0f), 10.0f };
 
-			FloorSquares[index]->SetModel(tile == Wall ? WallModel : FloorModel);
+			tile == Wall ? MakeWall(index) : MakeFloor(index);
 
 			r++;
 		}
 
 		t++;
 	}
+}
+
+void TheBackground::MakeWall(int index)
+{
+	FloorSquares[index]->SetModel(WallModel);
+
+	Walls.push_back(DBG_NEW Entity);
+	Walls.back()->Position = FloorSquares[index]->Position;
+	Walls.back()->Radius = FloorSquares[index]->Radius;
+	Walls.back()->ShowCollision = true;
+	Walls.back()->EntityOnly = true;
+}
+
+void TheBackground::MakeFloor(int index)
+{
+	FloorSquares[index]->SetModel(FloorModel);
 }

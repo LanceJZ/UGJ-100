@@ -13,9 +13,16 @@ void ThePlayer::SetParticleManager(ParticleManager* particleManager)
 	Particles = particleManager;
 }
 
+void ThePlayer::SetWalls(std::vector<Entity*> walls)
+{
+	Walls = walls;
+}
+
 bool ThePlayer::Initialize(Utilities* utilities)
 {
 	Model3D::Initialize(utilities);
+
+	Enabled = false;
 
 	return false;
 }
@@ -41,8 +48,18 @@ void ThePlayer::Input()
 
 void ThePlayer::Update(float deltaTime)
 {
+	PreviousPosition = Position;
+
 	Model3D::Update(deltaTime);
 
+	if (MoveFowardPressed)
+	{
+		MoveForward(deltaTime);
+	}
+	else
+	{
+		Velocity = { 0.0f, 0.0f, 0.0f };
+	}
 }
 
 void ThePlayer::Draw3D()
@@ -152,11 +169,12 @@ void ThePlayer::Keyboard()
 
 	if (IsKeyDown(KEY_UP))
 	{
-		Velocity = GetVelocityFromAngleZ(RotationZ, 100.0f);
+		MoveFowardPressed = true;
 	}
 	else
 	{
-		Velocity = { 0.0f };
+		MoveFowardPressed = false;
+		Velocity = { 0.0f, 0.0f, 0.0f };
 	}
 
 	if (IsKeyPressed(KEY_RIGHT_CONTROL) || IsKeyPressed(KEY_LEFT_CONTROL) ||
@@ -169,5 +187,27 @@ void ThePlayer::Keyboard()
 	}
 	else
 	{
+	}
+}
+
+void ThePlayer::MoveForward(float deltaTime)
+{
+	bool clear = true;
+
+	for (const auto& wall : Walls)
+	{
+		if (SquaresIntersect(*wall))
+		{
+			clear = false;
+
+			break;
+		}
+	}
+
+	if (clear) Velocity = GetVelocityFromAngleZ(RotationZ, 100.0f);
+	else
+	{
+		Position = PreviousPosition;
+		Velocity = { 0.0f, 0.0f, 0.0f };
 	}
 }

@@ -45,5 +45,6 @@ private:
 	TheBackground *Background = nullptr;
 
 	void MoveCamera();
+	void DoesPlayerMove();
 };
 

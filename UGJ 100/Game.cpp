@@ -41,6 +41,7 @@ bool Game::Load()
 	Player->SetModel(Managers.CM.LoadAndGetModel("Player"));
 	Background->SetFloorModel(Managers.CM.LoadAndGetModel("Floor64"));
 	Background->SetWallModel(Managers.CM.LoadAndGetModel("Wall64"));
+	Enemies->SetZombieModel(Managers.CM.LoadAndGetModel("Zombie"));
 
 	return true;
 }
@@ -51,8 +52,7 @@ bool Game::BeginRun()
 	Particles->SetManagers(Managers);
 	Player->SetParticleManager(Particles);
 	Enemies->SetParticleManager(Particles);
-
-	NewGame();
+	Enemies->SetPlayer(Player);
 
 	return true;
 }
@@ -81,6 +81,12 @@ void Game::NewGame()
 {
 	Logic->State = InPlay;
 
+	Player->Reset();
+	Player->SetWalls(Background->Walls);
+
+	Enemies->Reset();
+	Enemies->SetWalls(Background->Walls);
+	Enemies->NewGame();
 }
 
 void Game::Draw3D() const

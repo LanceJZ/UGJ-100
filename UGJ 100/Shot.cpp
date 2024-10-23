@@ -11,7 +11,7 @@ Shot::~Shot()
 
 bool Shot::Initialize(Utilities* utilities)
 {
-	LineModel::Initialize(TheUtilities);
+	Model3D::Initialize(TheUtilities);
 
 	return false;
 }
@@ -25,7 +25,7 @@ bool Shot::BeginRun()
 
 void Shot::Update(float deltaTime)
 {
-	LineModel::Update(deltaTime);
+	Model3D::Update(deltaTime);
 
 	if (Managers.EM.TimerElapsed(LifeTimerID)) Destroy();
 
@@ -34,7 +34,7 @@ void Shot::Update(float deltaTime)
 
 void Shot::Draw3D()
 {
-	LineModel::Draw3D();
+	Model3D::Draw3D();
 }
 
 void Shot::Spawn(Vector3 position)

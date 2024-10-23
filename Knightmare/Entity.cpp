@@ -110,6 +110,52 @@ bool Entity::GetBeenHit()
 }
 
 /// <summary>
+/// Check if the square intersects with the target. Using radius as the target's
+/// square size.
+/// </summary>
+/// <param name="targetPosition"></param>
+/// <param name="targetRadius"></param>
+/// <returns>bool</returns>
+bool Entity::SquaresIntersect(Vector3 targetPosition, float targetRadius)
+{
+	if (!Enabled) return false;
+
+	if (Position.x + Radius > targetPosition.x - targetRadius
+		&& Position.x - Radius < targetPosition.x + targetRadius
+		&& Position.y + Radius > targetPosition.y - targetRadius
+		&& Position.y - Radius < targetPosition.y + targetRadius)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// Check if the square intersects with the target. Using radius as the target's
+/// square size.
+/// </summary>
+/// <param name="target"></param>
+/// <returns></returns>
+bool Entity::SquaresIntersect(Entity& target)
+{
+	if (!target.Enabled) return false;
+
+	return SquaresIntersect(target.Position, target.Radius);
+}
+
+bool Entity::CircleIntersectSquare(Vector3 targetPosition, float targetRadius)
+{
+
+	return false;
+}
+
+bool Entity::CircleIntersectSquare(Entity& target)
+{
+	return CircleIntersectSquare(target.Position, target.Radius);
+}
+
+/// <summary>
 /// Circle collusion detection. Target circle will be compared to this class's.
 /// Will return true of they intersect. Only for use with 2D Z plane.
 /// Only X and Y will be used.
@@ -501,6 +547,7 @@ void Entity::SetModel(Model& model, float scale)
 	TheModel = model;
 	ModelScale = scale;
 	VerticesSize = (*model.meshes->vertices * -1.0f) * scale;
+	Radius = VerticesSize;
 }
 
 void Entity::SetModel(Model& model)

@@ -4,7 +4,7 @@
 #include "Shot.h"
 #include "ParticleManager.h"
 
-class Enemy : public LineModel
+class Enemy : public Model3D
 {
 public:
 	Enemy();
@@ -17,7 +17,7 @@ public:
 	void SetPlayer(ThePlayer* player);
 	void SetParticleManager(ParticleManager* particleManager);
 
-	void SetShotModel(LineModelPoints model);
+	void SetShotModel(Model model);
 
 	void SetFireSound(Sound fireSound);
 	void SetExplodeSound(Sound explodeSound);
@@ -51,7 +51,7 @@ protected:
 	Sound ExplodeSound = {};
 	Sound OnSound = {};
 	Sound SpawnSound = {};
-	LineModelPoints ShotModel = {};
+	Model ShotModel = {};
 
 	virtual void Shoot();
 	virtual void Shoot(Vector3 velocity);

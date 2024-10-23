@@ -68,6 +68,11 @@ public:
 	virtual void Destroy();
 
 	bool GetBeenHit();
+
+	bool SquaresIntersect(Vector3 targetPosition, float targetRadius);
+	bool SquaresIntersect(Entity& target);
+	bool CircleIntersectSquare(Vector3 targetPosition, float targetRadius);
+	bool CircleIntersectSquare(Entity& target);
 	bool CirclesIntersect(Vector3 targetPosition, float targetRadius);
 	bool CirclesIntersect(Entity& target);
 	bool CirclesIntersectBullet(Entity& target);

@@ -16,9 +16,12 @@ public:
 	int HighScore { 0 };
 	int Lives { 0 };
 
+	Vector3 PreviousPosition = {};
+
 	std::vector<Shot*> Shots = {};
 
 	void SetParticleManager(ParticleManager* particleManager);
+	void SetWalls(std::vector<Entity*> walls);
 
 	bool Initialize(Utilities* utilities);
 	bool BeginRun();
@@ -34,11 +37,15 @@ public:
 	void NewGame();
 
 private:
+	bool MoveFowardPressed = false;
+
 	int NextNewLifeScore = 10000;
 
 	ParticleManager* Particles = {};
+	std::vector<Entity*> Walls = {};
 
 	void Dead();
 	void Gamepad();
 	void Keyboard();
+	void MoveForward(float deltaTime);
 };

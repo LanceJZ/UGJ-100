@@ -26,11 +26,6 @@ bool Model3D::Initialize(Utilities* utilities)
 	return false;
 }
 
-void Model3D::LoadModel(Model &model, Texture2D &texture)
-{
-	Entity::LoadModel(model, texture);
-}
-
 bool Model3D::BeginRun()
 {
 	Entity::BeginRun();
@@ -129,6 +124,11 @@ void Model3D::Draw3D()
 
 	CalculateWorldSpace();
 	AfterCalculate();
+}
+
+void Model3D::LoadModel(Model &model, Texture2D &texture)
+{
+	Entity::LoadModel(model, texture);
 }
 
 void Model3D::SetModel(Model &model, float scale)

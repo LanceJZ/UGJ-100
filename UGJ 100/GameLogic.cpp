@@ -53,6 +53,7 @@ void GameLogic::FixedUpdate()
 	Common::FixedUpdate();
 
 	MoveCamera();
+	DoesPlayerMove();
 }
 
 void GameLogic::MoveCamera()
@@ -91,4 +92,8 @@ void GameLogic::MoveCamera()
 		TheCamera.position.y = 0.0f;
 		TheCamera.target.y = 0.0f;
 	}
+}
+
+void GameLogic::DoesPlayerMove()
+{
 }

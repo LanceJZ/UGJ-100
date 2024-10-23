@@ -18,7 +18,7 @@ public:
 	int MAP_WIDTH = 0;
 	int MAP_HEIGHT = 0;
 
-	std::vector<std::vector<TileType>> Map = {};
+	std::vector<Entity*> Walls = {};
 
 	void SetFloorModel(Model model);
 	void SetWallModel(Model model);
@@ -32,9 +32,12 @@ private:
 	Model WallModel = {};
 	Model FloorModel = {};
 
+	std::vector<std::vector<TileType>> Map = {};
 	std::vector<Model3D*> FloorSquares = {};
 
 	std::vector<std::vector<TileType>> GenerateMap();
 	void BuildMap();
+	void MakeWall(int index);
+	void MakeFloor(int index);
 };
 

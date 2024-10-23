@@ -1,8 +1,8 @@
 #pragma once
-#include "LineModel.h"
+#include "Model3D.h"
 #include "Globals.h"
 
-class Shot : public LineModel
+class Shot : public Model3D
 {
 public:
 	Shot();
