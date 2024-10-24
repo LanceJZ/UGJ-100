@@ -96,16 +96,20 @@ std::vector<std::vector<TileType>> TheBackground::GenerateMap()
 				{
 					newMap[y][x] = Floor;
 				}
+
+				if (y > MAP_HEIGHT - 10) newMap[x][y] = Floor;
 			}
 		}
 
 		map = newMap;
 	}
 
-	map.at((MAP_WIDTH / 2) - 1).at((MAP_HEIGHT / 2) - 1) = Floor;
-	map.at((MAP_WIDTH / 2)).at((MAP_HEIGHT / 2) - 1) = Floor;
-	map.at((MAP_WIDTH / 2) - 1).at((MAP_HEIGHT / 2)) = Floor;
-	map.at((MAP_WIDTH / 2)).at((MAP_HEIGHT / 2)) = Floor;
+	map.at((MAP_WIDTH / 2) - 1).at((MAP_HEIGHT / 2) - 5) = Floor;
+	map.at((MAP_WIDTH / 2)).at((MAP_HEIGHT / 2) - 5) = Floor;
+	map.at((MAP_WIDTH / 2) - 1).at((MAP_HEIGHT / 2) - 6) = Floor;
+	map.at((MAP_WIDTH / 2)).at((MAP_HEIGHT / 2) - 6) = Floor;
+
+
 
 	return map;
 }
@@ -131,7 +135,10 @@ void TheBackground::BuildMap()
 			{ -width + (t * tileSize) + (tileSize / 2.0f),
 				-height + (r * tileSize) + (tileSize / 2.0f), 10.0f };
 
-			tile == Wall ? MakeWall(index) : MakeFloor(index);
+			//tile == Wall ? MakeWall(index) : MakeFloor(index);
+
+			if (tile == Wall) MakeWall(index);
+			else MakeFloor(index);
 
 			r++;
 		}

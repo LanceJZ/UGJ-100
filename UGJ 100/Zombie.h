@@ -19,8 +19,16 @@ public:
 	void Destroy();
 
 private:
+	bool MoveToWaypoint = false;
+	bool HitWall = false;
+	bool GoingAfterPlayer = false;
+
+	Vector3 DestinationWaypoint = {0.0f,0.0f,0.0f};
+
+	Entity LookAhead = {};
+
 	std::vector<Entity*> Walls = {};
 
-
 	void MoveForward(float deltaTime);
+	void CalculateDestinationWaypoint(float deltaTime);
 };

@@ -24,6 +24,8 @@ bool Zombie::BeginRun()
 {
 	Model3D::BeginRun();
 
+	LookAhead.Radius = Radius;
+
 	return false;
 }
 
@@ -31,6 +33,8 @@ void Zombie::Update(float deltaTime)
 {
 	Model3D::Update(deltaTime);
 
+	if (MoveToWaypoint) MoveForward(deltaTime);
+	else CalculateDestinationWaypoint(deltaTime);
 }
 
 void Zombie::Draw3D()
@@ -40,8 +44,11 @@ void Zombie::Draw3D()
 
 void Zombie::Spawn()
 {
-	float width = (float)FieldSize.y;
-	float height = (float)FieldSize.x;
+	MoveToWaypoint = false;
+	HitWall = false;
+	GoingAfterPlayer = true;
+	float width = (float)FieldSize.x / 2.5f;
+	float height = (float)FieldSize.y / 1.75f;
 
 	Vector3 position = { 0.0f, 0.0f, 0.0f };
 
@@ -63,7 +70,9 @@ void Zombie::Spawn()
 		position.y = GetRandomFloat(height / 2.0f, height);
 	}
 
-	Spawn({ position });
+	position.y = GetRandomFloat(height / 1.1f, height);
+
+	Spawn(position);
 }
 
 void Zombie::Spawn(Vector3 position)
@@ -80,5 +89,56 @@ void Zombie::Destroy()
 
 void Zombie::MoveForward(float deltaTime)
 {
+	if (CirclesIntersect(DestinationWaypoint, 10.0f))
+	{
+		MoveToWaypoint = false;
+		GoingAfterPlayer = true;
+		return;
+	}
+
+	for (const auto& wall : Walls)
+	{
+		if (SquaresIntersect(*wall))
+		{
+			MoveToWaypoint = false;
+			GoingAfterPlayer = false;
+			HitWall = true;
+			Velocity = { 0.0f, 0.0f, 0.0f };
+			Position = LastFramePosition;
+			return;
+		}
+	}
+
+	SetRotationZFromVector(DestinationWaypoint);
+
+	Velocity = GetVelocityFromAngleZ(RotationZ, 75.0f);
+}
+
+void Zombie::CalculateDestinationWaypoint(float deltaTime)
+{
+	if (HitWall)
+	{
+		if (GetRandomValue(0, 10) > 5)
+		{
+			RotationZ += HalfPi / 2.0f;
+		}
+		else
+		{
+			RotationZ -= HalfPi / 2.0f;
+		}
+
+		MoveToWaypoint = true;
+		HitWall = false;
+		DestinationWaypoint = Position + GetVelocityFromAngleZ(RotationZ, 400.0f);
+		return;
+	}
+
+	if (GoingAfterPlayer)
+	{
+		ChasePlayer();
+
+		MoveToWaypoint = true;
+		DestinationWaypoint = Position + GetVelocityFromAngleZ(RotationZ, 500.0f);
+	}
 
 }

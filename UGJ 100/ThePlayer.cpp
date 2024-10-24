@@ -48,11 +48,9 @@ void ThePlayer::Input()
 
 void ThePlayer::Update(float deltaTime)
 {
-	PreviousPosition = Position;
-
 	Model3D::Update(deltaTime);
 
-	if (MoveFowardPressed)
+	if (MoveForwardPressed)
 	{
 		MoveForward(deltaTime);
 	}
@@ -169,11 +167,11 @@ void ThePlayer::Keyboard()
 
 	if (IsKeyDown(KEY_UP))
 	{
-		MoveFowardPressed = true;
+		MoveForwardPressed = true;
 	}
 	else
 	{
-		MoveFowardPressed = false;
+		MoveForwardPressed = false;
 		Velocity = { 0.0f, 0.0f, 0.0f };
 	}
 
@@ -192,6 +190,31 @@ void ThePlayer::Keyboard()
 
 void ThePlayer::MoveForward(float deltaTime)
 {
+	if (Y() > FieldSize.y / 4.0f)
+	{
+		Position.y = LastFramePosition.y;
+		Velocity.y = 0.0f;
+		return;
+	}
+
+	if (X() < FieldSize.x / 4.0f && X() > -(FieldSize.x / 4.0f))
+	{
+		TheCamera.position.x = Position.x;
+		TheCamera.target.x = TheCamera.position.x;
+	}
+	else
+	{
+	}
+
+	if (Y() > -(FieldSize.y / 4.0f))
+	{
+		TheCamera.position.y = Position.y;
+		TheCamera.target.y = TheCamera.position.y;
+	}
+	else
+	{
+	}
+
 	bool clear = true;
 
 	for (const auto& wall : Walls)
@@ -207,7 +230,7 @@ void ThePlayer::MoveForward(float deltaTime)
 	if (clear) Velocity = GetVelocityFromAngleZ(RotationZ, 100.0f);
 	else
 	{
-		Position = PreviousPosition;
+		Position = LastFramePosition;
 		Velocity = { 0.0f, 0.0f, 0.0f };
 	}
 }

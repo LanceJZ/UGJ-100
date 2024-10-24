@@ -16,8 +16,6 @@ public:
 	int HighScore { 0 };
 	int Lives { 0 };
 
-	Vector3 PreviousPosition = {};
-
 	std::vector<Shot*> Shots = {};
 
 	void SetParticleManager(ParticleManager* particleManager);
@@ -37,7 +35,7 @@ public:
 	void NewGame();
 
 private:
-	bool MoveFowardPressed = false;
+	bool MoveForwardPressed = false;
 
 	int NextNewLifeScore = 10000;
 

@@ -58,40 +58,42 @@ void GameLogic::FixedUpdate()
 
 void GameLogic::MoveCamera()
 {
-	float cameraMoveX = GetScreenWidth() / 3.0f;
-	float cameraMoveY = GetScreenHeight() / 3.5f;
 
-	if (Player->X() > cameraMoveX)
-	{
-		TheCamera.position.x = cameraMoveX;
-		TheCamera.target.x = cameraMoveX;
-	}
-	else if (Player->X() < -cameraMoveX)
-	{
-		TheCamera.position.x = -cameraMoveX;
-		TheCamera.target.x = -cameraMoveX;
-	}
-	else
-	{
-		TheCamera.position.x = 0.0f;
-		TheCamera.target.x = 0.0f;
-	}
 
-	if (Player->Y() > cameraMoveY)
-	{
-		TheCamera.position.y = cameraMoveY;
-		TheCamera.target.y = cameraMoveY;
-	}
-	else if (Player->Y() < -cameraMoveY)
-	{
-		TheCamera.position.y = -cameraMoveY;
-		TheCamera.target.y = -cameraMoveY;
-	}
-	else
-	{
-		TheCamera.position.y = 0.0f;
-		TheCamera.target.y = 0.0f;
-	}
+	//float cameraMoveX = GetScreenWidth() / 5.0f;
+	//float cameraMoveY = GetScreenHeight() / 5.0f;
+
+	//if (Player->X() > cameraMoveX)
+	//{
+	//	TheCamera.position.x = Player->Position.x;
+	//	TheCamera.target.x = TheCamera.position.x;
+	//}
+	//else if (Player->X() < -cameraMoveX)
+	//{
+	//	TheCamera.position.x = Player->Position.x;
+	//	TheCamera.target.x = TheCamera.position.x;
+	//}
+	//else
+	//{
+	//	TheCamera.position.x = 0.0f;
+	//	TheCamera.target.x = 0.0f;
+	//}
+
+	//if (Player->Y() > cameraMoveY)
+	//{
+	//	TheCamera.position.y = Player->Position.y;
+	//	TheCamera.target.y = TheCamera.position.y;
+	//}
+	//else if (Player->Y() < -cameraMoveY)
+	//{
+	//	TheCamera.position.y = Player->Position.y;
+	//	TheCamera.target.y = TheCamera.position.y;
+	//}
+	//else
+	//{
+	//	TheCamera.position.y = 0.0f;
+	//	TheCamera.target.y = 0.0f;
+	//}
 }
 
 void GameLogic::DoesPlayerMove()

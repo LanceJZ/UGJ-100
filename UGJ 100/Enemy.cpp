@@ -187,16 +187,7 @@ void Enemy::ChasePlayer()
 
 	Vector3 target = Player->Position;
 
-	if (!Player->Enabled)
-	{
-		if (X() > 0.0f) target.x = (float)WindowWidth;
-		else target.x = (float)-WindowWidth;
-
-		if (Y() > 0.0f) target.y = (float)WindowHeight;
-		else target.y = (float)-WindowHeight;
-	}
-
-	SetRotateVelocity(target, TurnSpeed, Speed);
+	SetRotationZFromVector(target);
 }
 
 bool Enemy::CheckCollisions()

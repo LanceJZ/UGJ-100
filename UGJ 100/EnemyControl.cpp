@@ -92,10 +92,11 @@ void EnemyControl::SpawnZombies(int count)
 			Zombies.push_back(DBG_NEW Zombie());
 			Managers.EM.AddModel3D(Zombies.at(spawnNumber), ZombieModel);
 			Zombies.at(spawnNumber)->Initialize(TheUtilities);
+			Zombies.at(spawnNumber)->SetPlayer(Player);
 			Zombies.at(spawnNumber)->BeginRun();
-			Zombies.at(spawnNumber)->SetWalls(Walls);
 		}
 
+		Zombies.at(spawnNumber)->SetWalls(Walls);
 		Zombies.at(spawnNumber)->Spawn();
 	}
 }
