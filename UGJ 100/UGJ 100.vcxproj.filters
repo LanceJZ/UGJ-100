@@ -45,6 +45,9 @@
     <ClCompile Include="Zombie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TheCrowbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -75,6 +78,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Zombie.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TheCrowbar.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

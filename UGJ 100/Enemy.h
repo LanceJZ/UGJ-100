@@ -10,6 +10,8 @@ public:
 	Enemy();
 	virtual ~Enemy();
 
+	bool Dead = false;
+	int Health = 10;
 	float ShotTimerAmount = 0.0f;
 
 	std::vector<Shot*> Shots;
@@ -47,10 +49,11 @@ protected:
 
 	ThePlayer* Player = nullptr;
 	ParticleManager* Particles = nullptr;
-	Sound FireSound = {};
-	Sound ExplodeSound = {};
+	Sound AttackSound = {};
+	Sound HitSound = {};
 	Sound OnSound = {};
 	Sound SpawnSound = {};
+
 	Model ShotModel = {};
 
 	virtual void Shoot();

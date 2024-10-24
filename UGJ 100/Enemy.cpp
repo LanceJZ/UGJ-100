@@ -21,12 +21,12 @@ void Enemy::SetShotModel(Model model)
 
 void Enemy::SetFireSound(Sound fireSound)
 {
-	FireSound = fireSound;
+	AttackSound = fireSound;
 }
 
 void Enemy::SetExplodeSound(Sound explodeSound)
 {
-	ExplodeSound = explodeSound;
+	HitSound = explodeSound;
 }
 
 void Enemy::SetParticleManager(ParticleManager* particleManager)
@@ -97,13 +97,16 @@ void Enemy::Hit()
 {
 	Entity::Hit();
 
-	if (!Player->GameOver) PlaySound(ExplodeSound);
+	if (!Player->GameOver) PlaySound(HitSound);
 
-	if (Particles != nullptr) Particles->SpawnLineParticles(Position,
+	if (Particles != nullptr) Particles->SpawnCubes(Position,
 		Vector3Multiply(Velocity, {0.25f}),
 		20, 100, 20, 2.0f, WHITE);
 
-	Destroy();
+	if (Health <= 0)
+	{
+		Dead = true;
+	}
 }
 
 void Enemy::Reset()
@@ -127,7 +130,7 @@ void Enemy::Destroy()
 
 void Enemy::Shoot()
 {
-	PlaySound(FireSound);
+	PlaySound(AttackSound);
 
 	Managers.EM.ResetTimer(ShotTimerID);
 

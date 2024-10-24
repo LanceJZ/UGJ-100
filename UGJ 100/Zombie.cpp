@@ -33,6 +33,14 @@ void Zombie::Update(float deltaTime)
 {
 	Model3D::Update(deltaTime);
 
+	if (Dead)
+	{
+		Velocity = { 0.0f, 0.0f, 0.0f };
+		return;
+	}
+
+	CheckHit();
+
 	if (MoveToWaypoint) MoveForward(deltaTime);
 	else CalculateDestinationWaypoint(deltaTime);
 }
@@ -44,9 +52,13 @@ void Zombie::Draw3D()
 
 void Zombie::Spawn()
 {
+	Dead = false;
 	MoveToWaypoint = false;
 	HitWall = false;
 	GoingAfterPlayer = true;
+
+	Speed = 60.666f;
+
 	float width = (float)FieldSize.x / 2.5f;
 	float height = (float)FieldSize.y / 1.75f;
 
@@ -111,7 +123,7 @@ void Zombie::MoveForward(float deltaTime)
 
 	SetRotationZFromVector(DestinationWaypoint);
 
-	Velocity = GetVelocityFromAngleZ(RotationZ, 75.0f);
+	Velocity = GetVelocityFromAngleZ(RotationZ, Speed);
 }
 
 void Zombie::CalculateDestinationWaypoint(float deltaTime)
@@ -141,4 +153,17 @@ void Zombie::CalculateDestinationWaypoint(float deltaTime)
 		DestinationWaypoint = Position + GetVelocityFromAngleZ(RotationZ, 500.0f);
 	}
 
+}
+
+void Zombie::CheckHit()
+{
+	if (CirclesIntersect(Player->Crowbar->GetWorldPosition(), Player->Crowbar->Radius))
+	{
+		if (Player->Crowbar->Swinging)
+		{
+			Hit();
+			Health -= Player->Crowbar->Damage;
+			Player->Crowbar->Hit();
+		}
+	}
 }

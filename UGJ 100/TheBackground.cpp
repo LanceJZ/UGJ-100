@@ -59,7 +59,7 @@ std::vector<std::vector<TileType>> TheBackground::GenerateMap()
 	{
 		for (int x = 1; x < MAP_WIDTH - 1; ++x)
 		{
-			if (GetRandomValue(0, 100) < 70)
+			if (GetRandomValue(0, 100) < 70) //70 percent chance to be a Floor
 			{
 				map[y][x] = Floor;
 			}
@@ -97,19 +97,36 @@ std::vector<std::vector<TileType>> TheBackground::GenerateMap()
 					newMap[y][x] = Floor;
 				}
 
+			}
+		}
+
+		for (int y = 1; y < MAP_HEIGHT - 1; ++y)
+		{
+			for (int x = 1; x < MAP_WIDTH - 1; ++x)
+			{
 				if (y > MAP_HEIGHT - 10) newMap[x][y] = Floor;
+
+				int amount = 5;
+				int xStart = ((MAP_WIDTH / 2) + (amount / 2)) - amount;
+				int yStart = ((MAP_HEIGHT / 2) + (amount / 2) - 5) - amount;
+				int xEnd = xStart + amount;
+				int yEnd = yStart + amount;
+
+				if (y >= yStart && y <= yEnd)
+				{
+					if (x >= xStart && x <= xEnd)
+						newMap[x][y] = Floor;
+				}
 			}
 		}
 
 		map = newMap;
 	}
 
-	map.at((MAP_WIDTH / 2) - 1).at((MAP_HEIGHT / 2) - 5) = Floor;
-	map.at((MAP_WIDTH / 2)).at((MAP_HEIGHT / 2) - 5) = Floor;
-	map.at((MAP_WIDTH / 2) - 1).at((MAP_HEIGHT / 2) - 6) = Floor;
-	map.at((MAP_WIDTH / 2)).at((MAP_HEIGHT / 2) - 6) = Floor;
-
-
+	//map.at((MAP_WIDTH / 2) - 1).at((MAP_HEIGHT / 2) - 5) = Floor;
+	//map.at((MAP_WIDTH / 2)).at((MAP_HEIGHT / 2) - 5) = Floor;
+	//map.at((MAP_WIDTH / 2) - 1).at((MAP_HEIGHT / 2) - 6) = Floor;
+	//map.at((MAP_WIDTH / 2)).at((MAP_HEIGHT / 2) - 6) = Floor;
 
 	return map;
 }

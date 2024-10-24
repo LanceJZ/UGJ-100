@@ -39,6 +39,7 @@ bool Game::Load()
 
 	//Models
 	Player->SetModel(Managers.CM.LoadAndGetModel("Player"));
+	Player->SetCrowbarModel(Managers.CM.LoadAndGetModel("Crowbar"));
 	Background->SetFloorModel(Managers.CM.LoadAndGetModel("Floor64"));
 	Background->SetWallModel(Managers.CM.LoadAndGetModel("Wall64"));
 	Enemies->SetZombieModel(Managers.CM.LoadAndGetModel("Zombie"));

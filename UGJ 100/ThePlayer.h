@@ -3,6 +3,7 @@
 #include "Model3D.h"
 #include "ParticleManager.h"
 #include "Shot.h"
+#include "TheCrowbar.h"
 
 class ThePlayer : public Model3D
 {
@@ -15,11 +16,14 @@ public:
 	int Score { 0 };
 	int HighScore { 0 };
 	int Lives { 0 };
+	int HP { 100 };
 
 	std::vector<Shot*> Shots = {};
+	TheCrowbar* Crowbar = nullptr;
 
 	void SetParticleManager(ParticleManager* particleManager);
 	void SetWalls(std::vector<Entity*> walls);
+	void SetCrowbarModel(Model crowbarModel);
 
 	bool Initialize(Utilities* utilities);
 	bool BeginRun();
@@ -46,4 +50,5 @@ private:
 	void Gamepad();
 	void Keyboard();
 	void MoveForward(float deltaTime);
+	void UseWeapon();
 };

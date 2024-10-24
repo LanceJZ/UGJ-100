@@ -23,6 +23,8 @@ private:
 	bool HitWall = false;
 	bool GoingAfterPlayer = false;
 
+	float Speed = 0.0f;
+
 	Vector3 DestinationWaypoint = {0.0f,0.0f,0.0f};
 
 	Entity LookAhead = {};
@@ -31,4 +33,5 @@ private:
 
 	void MoveForward(float deltaTime);
 	void CalculateDestinationWaypoint(float deltaTime);
+	void CheckHit();
 };

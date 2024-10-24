@@ -2,6 +2,7 @@
 
 ThePlayer::ThePlayer()
 {
+	Managers.EM.AddModel3D(Crowbar = DBG_NEW TheCrowbar);
 }
 
 ThePlayer::~ThePlayer()
@@ -18,11 +19,17 @@ void ThePlayer::SetWalls(std::vector<Entity*> walls)
 	Walls = walls;
 }
 
+void ThePlayer::SetCrowbarModel(Model crowbarModel)
+{
+	Crowbar->SetModel(crowbarModel);
+}
+
 bool ThePlayer::Initialize(Utilities* utilities)
 {
 	Model3D::Initialize(utilities);
 
 	Enabled = false;
+	Crowbar->Enabled = false;
 
 	return false;
 }
@@ -30,6 +37,9 @@ bool ThePlayer::Initialize(Utilities* utilities)
 bool ThePlayer::BeginRun()
 {
 	Model3D::BeginRun();
+
+	Crowbar->SetParent(*this);
+	Crowbar->Position = { 15.0f, 7.0f, 0 };
 
 	return false;
 }
@@ -94,6 +104,7 @@ void ThePlayer::Reset()
 	Position = { 0, 0, 0 };
 	Velocity = { 0, 0, 0 };
 	Enabled = true;
+	Crowbar->Enabled = true;
 }
 
 void ThePlayer::NewGame()
@@ -147,11 +158,11 @@ void ThePlayer::Keyboard()
 {
 	float adjustment = 3.0f;
 
-	if (IsKeyPressed(KEY_RIGHT))
+	if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D))
 	{
 		RotationZ += HalfPi / adjustment;
 	}
-	else if (IsKeyPressed(KEY_LEFT))
+	else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
 	{
 		RotationZ -= HalfPi / adjustment;
 	}
@@ -159,13 +170,7 @@ void ThePlayer::Keyboard()
 	{
 	}
 
-	if (IsKeyPressed(KEY_SPACE))
-	{
-		Position = { 0, 0, 0 };
-		Velocity = { 0, 0, 0 };
-	}
-
-	if (IsKeyDown(KEY_UP))
+	if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))
 	{
 		MoveForwardPressed = true;
 	}
@@ -186,18 +191,25 @@ void ThePlayer::Keyboard()
 	else
 	{
 	}
+
+	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+	{
+		UseWeapon();
+	}
 }
 
 void ThePlayer::MoveForward(float deltaTime)
 {
-	if (Y() > FieldSize.y / 4.0f)
+	float adjustment = 4.01f;
+
+	if (Y() > FieldSize.y / 2.1f)
 	{
 		Position.y = LastFramePosition.y;
 		Velocity.y = 0.0f;
 		return;
 	}
 
-	if (X() < FieldSize.x / 4.0f && X() > -(FieldSize.x / 4.0f))
+	if (X() < FieldSize.x / adjustment && X() > -(FieldSize.x / adjustment))
 	{
 		TheCamera.position.x = Position.x;
 		TheCamera.target.x = TheCamera.position.x;
@@ -206,7 +218,7 @@ void ThePlayer::MoveForward(float deltaTime)
 	{
 	}
 
-	if (Y() > -(FieldSize.y / 4.0f))
+	if (Y() > -(FieldSize.y / adjustment))
 	{
 		TheCamera.position.y = Position.y;
 		TheCamera.target.y = TheCamera.position.y;
@@ -233,4 +245,9 @@ void ThePlayer::MoveForward(float deltaTime)
 		Position = LastFramePosition;
 		Velocity = { 0.0f, 0.0f, 0.0f };
 	}
+}
+
+void ThePlayer::UseWeapon()
+{
+	Crowbar->Swing();
 }
