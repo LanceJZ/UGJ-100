@@ -210,18 +210,12 @@ bool Enemy::CheckCollisions()
 		}
 	}
 
-	if (!Player->GetBeenHit())
+	if (CirclesIntersect(*Player))
 	{
-		if (CirclesIntersect(*Player))
-		{
+		if (!Player->GetBeenHit())
+			Player->Hit(Damage);
 
-			Hit();
-			Player->ScoreUpdate(Points);
-
-			Player->Hit(Position, Velocity);
-
-			return true;
-		}
+		return true;
 	}
 
 	return false;

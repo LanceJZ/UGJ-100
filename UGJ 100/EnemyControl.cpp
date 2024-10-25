@@ -20,6 +20,11 @@ void EnemyControl::SetParticleManager(ParticleManager* particles)
 	Particles = particles;
 }
 
+void EnemyControl::SetShotModel(Model model)
+{
+	ShotModel = model;
+}
+
 void EnemyControl::SetZombieModel(Model zombieModel)
 {
 	ZombieModel = zombieModel;

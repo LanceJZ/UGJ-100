@@ -22,6 +22,7 @@ private:
 	bool MoveToWaypoint = false;
 	bool HitWall = false;
 	bool GoingAfterPlayer = false;
+	bool HitPlayer = false;
 
 	float Speed = 0.0f;
 
@@ -34,4 +35,5 @@ private:
 	void MoveForward(float deltaTime);
 	void CalculateDestinationWaypoint(float deltaTime);
 	void CheckHit();
+	void CheckPlayerHit();
 };

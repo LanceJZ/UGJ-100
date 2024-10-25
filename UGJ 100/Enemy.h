@@ -42,6 +42,7 @@ protected:
 	size_t ShotTimerID = 0;
 
 	int Points = 0;
+	int Damage = 10;
 	float Speed = 200.0f;
 	float TurnSpeed = 1.45f;
 	float RotateMagnitude = PI / 2;

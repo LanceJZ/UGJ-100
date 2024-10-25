@@ -282,7 +282,7 @@ size_t EntityManager::AddModel3D(Model &model, float scale)
 {
 	size_t modelNumber = AddModel3D(model);
 	Entities[modelNumber]->SetCamera(TheCamera);
-	Entities[modelNumber]->Scale = scale;
+	Entities[modelNumber]->Scalef = scale;
 
 	return modelNumber;
 }

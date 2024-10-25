@@ -15,7 +15,7 @@ public:
 	bool IgnoreParentRotation = false;
 	bool WasCulled = false;
 	int ChildNumber = 0;
-	float Scale = 1;
+	float Scalef = 1;
 	float ModelScale = 1;
 	float MaxSpeed = 0;
 	float Radius = 0;
@@ -39,6 +39,7 @@ public:
 	Vector3 Rotation = Vector3Zero();
 	Vector3 RotationVelocity = Vector3Zero();
 	Vector3 RotationAcceleration = Vector3Zero();
+	Vector3 Scale = {1.0f, 1.0f, 1.0f};
 	Vector3 LastFramePosition = Vector3Zero();
 	Vector3 LastFrameWorldPosition = Vector3Zero();
 	Vector3 WorldPosition = Vector3Zero();
@@ -117,6 +118,7 @@ public:
 	virtual void SetModel(LineModelPoints lines, float scale);
 	virtual Model& Get3DModel();
 	void RemoveParent(Entity* parent);
+	void ResetBeenHit();
 	void ClearParents();
 	void CheckScreenEdge();
 	void CheckScreenEdgeX();

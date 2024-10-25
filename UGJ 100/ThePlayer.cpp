@@ -3,6 +3,10 @@
 ThePlayer::ThePlayer()
 {
 	Managers.EM.AddModel3D(Crowbar = DBG_NEW TheCrowbar);
+	Managers.EM.AddModel3D(HealthBar = DBG_NEW Model3D);
+	Managers.EM.AddModel3D(HealthBarBackground = DBG_NEW Model3D);
+
+	HitTimerID = Managers.EM.AddTimer();
 }
 
 ThePlayer::~ThePlayer()
@@ -24,12 +28,19 @@ void ThePlayer::SetCrowbarModel(Model crowbarModel)
 	Crowbar->SetModel(crowbarModel);
 }
 
+void ThePlayer::SetCubeModel(Model cubeModel)
+{
+	CubeModel = cubeModel;
+}
+
 bool ThePlayer::Initialize(Utilities* utilities)
 {
 	Model3D::Initialize(utilities);
 
 	Enabled = false;
 	Crowbar->Enabled = false;
+	HealthBar->Enabled = false;
+	HealthBarBackground->Enabled = false;
 
 	return false;
 }
@@ -38,8 +49,26 @@ bool ThePlayer::BeginRun()
 {
 	Model3D::BeginRun();
 
+	HealthBar->SetModel(CubeModel);
+	HealthBarBackground->SetModel(CubeModel);
+
 	Crowbar->SetParent(*this);
 	Crowbar->Position = { 15.0f, 7.0f, 0 };
+
+	float barY = -30.0f;
+	HealthBar->SetParent(*this);
+	HealthBar->Position = { 0.0f, barY, 0.0f };
+	HealthBar->ModelColor = { 130, 6, 6, 255 };
+	HealthBar->Scale = { 20.0f, 4.0f, 1.0f }; // 20 is for debugging.
+	HealthBar->IgnoreParentRotation = true;
+
+	HealthBarBackground->SetParent(*this);
+	HealthBarBackground->Position = { 0.0f, barY, 1.0f };
+	HealthBarBackground->ModelColor = { 90, 90, 90, 255 };
+	HealthBarBackground->Scale = { 50.0f, 4.0f, 1.0f };
+	HealthBarBackground->IgnoreParentRotation = true;
+
+	Managers.EM.SetTimer(HitTimerID, 0.5f);
 
 	return false;
 }
@@ -68,6 +97,11 @@ void ThePlayer::Update(float deltaTime)
 	{
 		Velocity = { 0.0f, 0.0f, 0.0f };
 	}
+
+	if (GetBeenHit())
+	{
+		if (Managers.EM.TimerElapsed(HitTimerID)) ResetBeenHit();
+	}
 }
 
 void ThePlayer::Draw3D()
@@ -78,8 +112,26 @@ void ThePlayer::Draw3D()
 
 void ThePlayer::Hit()
 {
+	Entity::Hit();
+
 	Acceleration = { 0 };
 	Velocity = { 0 };
+
+	Managers.EM.ResetTimer(HitTimerID);
+}
+
+void ThePlayer::Hit(float damage)
+{
+	Hit();
+
+	HP -= damage;
+
+	HealthBar->Scale = { 50.0f * HP / MaxHP, 4.0f, 1.0f };
+
+	if (HP <= 0)
+	{
+		Dead();
+	}
 }
 
 void ThePlayer::Hit(Vector3 location, Vector3 velocity)
@@ -105,10 +157,14 @@ void ThePlayer::Reset()
 	Velocity = { 0, 0, 0 };
 	Enabled = true;
 	Crowbar->Enabled = true;
+	HealthBar->Enabled = true;
+	HealthBarBackground->Enabled = true;
+	HealthBar->Scale = { 50.0f, 4.0f, 1.0f };
 }
 
 void ThePlayer::NewGame()
 {
+	HP = MaxHP;
 	Lives = 2;
 	Score = 0;
 	GameOver = false;

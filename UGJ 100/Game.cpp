@@ -38,11 +38,15 @@ bool Game::Load()
 	Particles->Load();
 
 	//Models
+	Model cube = Managers.CM.LoadAndGetModel("Cube");
+
 	Player->SetModel(Managers.CM.LoadAndGetModel("Player"));
+	Player->SetCubeModel(cube);
 	Player->SetCrowbarModel(Managers.CM.LoadAndGetModel("Crowbar"));
 	Background->SetFloorModel(Managers.CM.LoadAndGetModel("Floor64"));
 	Background->SetWallModel(Managers.CM.LoadAndGetModel("Wall64"));
 	Enemies->SetZombieModel(Managers.CM.LoadAndGetModel("Zombie"));
+	Enemies->SetShotModel(cube);
 
 	return true;
 }

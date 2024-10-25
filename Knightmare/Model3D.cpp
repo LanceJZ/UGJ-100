@@ -122,7 +122,6 @@ void Model3D::Draw3D()
 
 	DrawModel(TheModel, ModelPosition, ModelScale, ModelColor);	// Draw 3D model
 
-	CalculateWorldSpace();
 	AfterCalculate();
 }
 

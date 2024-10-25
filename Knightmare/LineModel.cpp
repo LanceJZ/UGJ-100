@@ -31,7 +31,7 @@ void LineModel::Draw3D()
 		return;
 	}
 
-	rlPushMatrix();
+	BeforeCalculate();
 
 	if (IsChild)
 	{
@@ -49,11 +49,7 @@ void LineModel::Draw3D()
 
 	}
 
-	rlTranslatef(Position.x, Position.y, Position.z);
-	rlRotatef(RotationX, 1, 0, 0);
-	rlRotatef(RotationY, 0, 1, 0);
-	rlRotatef(RotationZ, 0, 0, 1);
-	rlScalef(Scale, Scale, Scale);
+	CalculateWorldVectors();
 
 	rlBegin(RL_LINES);
 	rlColor4ub(ModelColor.r, ModelColor.g, ModelColor.b, ModelColor.a);
@@ -71,8 +67,7 @@ void LineModel::Draw3D()
 		);
 	}
 
-	rlPopMatrix();
-	rlEnd();
+	AfterCalculate();
 }
 
 LineModelPoints LineModel::GetLineModel()

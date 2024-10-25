@@ -62,7 +62,7 @@ void Entity::Draw3D()
 {
 #ifdef _DEBUG
 	if((Enabled && !IsChild && !HideCollision) || EntityOnly || ShowCollision)
-		DrawCircle3D(GetWorldPosition(), Radius * Scale, {0}, 0, {150, 50, 200, 200});
+		DrawCircle3D(GetWorldPosition(), Radius * Scalef, {0}, 0, {150, 50, 200, 200});
 #endif
 }
 
@@ -83,7 +83,8 @@ void Entity::Z(float z)
 
 void Entity::SetScale(float scale)
 {
-	Scale = scale;
+	Scalef = scale;
+	Scale = {scale, scale, scale};
 }
 
 void Entity::Spawn(Vector3 position)
@@ -170,7 +171,7 @@ bool Entity::CirclesIntersect(Vector3 targetPosition, float targetRadius)
 	Vector2 distance = { targetPosition.x - Position.x,
 		targetPosition.y - Position.y };
 
-	float radius = (Radius * Scale) + targetRadius;
+	float radius = (Radius * Scalef) + targetRadius;
 
 	if ((distance.x * distance.x) + (distance.y * distance.y)
 		< radius * radius) return true;
@@ -189,7 +190,7 @@ bool Entity::CirclesIntersect(Entity& target)
 {
 	if (!target.Enabled) return false;
 
-	return CirclesIntersect(target.Position, (target.Radius * target.Scale));
+	return CirclesIntersect(target.Position, (target.Radius * target.Scalef));
 }
 
 bool Entity::CirclesIntersectBullet(Entity& target)
@@ -596,7 +597,7 @@ void Entity::SetModel(LineModelPoints lines)
 
 void Entity::SetModel(LineModelPoints lines, float scale)
 {
-	Scale = scale;
+	Scalef = scale;
 	SetModel(lines);
 }
 
@@ -609,6 +610,11 @@ void Entity::RemoveParent(Entity* parent)
 {
 	auto parentID = std::find(Parents->begin(), Parents->end(), parent);
 	if (parentID != Parents->end()) Parents->erase(parentID);
+}
+
+void Entity::ResetBeenHit()
+{
+	BeenHit = false;
 }
 
 void Entity::ClearParents()
@@ -739,7 +745,7 @@ void Entity::CalculateWorldVectors()
 				rlRotatef(parent->RotationZ, 0, 0, 1);
 			}
 
-			rlScalef(parent->Scale, parent->Scale, parent->Scale);
+			rlScalef(parent->Scale.x, parent->Scale.y, parent->Scale.z);
 		}
 	}
 
@@ -747,7 +753,7 @@ void Entity::CalculateWorldVectors()
 	rlRotatef(RotationX, 1, 0, 0);
 	rlRotatef(RotationY, 0, 1, 0);
 	rlRotatef(RotationZ, 0, 0, 1);
-	rlScalef(Scale, Scale, Scale);
+	rlScalef(Scale.x, Scale.y, Scale.z);
 }
 
 void Entity::AfterCalculate()
@@ -798,5 +804,5 @@ void Entity::CalculateRadius()
 		}
 	}
 
-	Radius = farDistance * 0.9f * Scale;
+	Radius = farDistance * 0.9f * Scalef;
 }

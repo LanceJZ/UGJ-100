@@ -40,8 +40,9 @@ void Zombie::Update(float deltaTime)
 	}
 
 	CheckHit();
+	CheckPlayerHit();
 
-	if (MoveToWaypoint) MoveForward(deltaTime);
+	if (MoveToWaypoint && !HitPlayer) MoveForward(deltaTime);
 	else CalculateDestinationWaypoint(deltaTime);
 }
 
@@ -165,5 +166,21 @@ void Zombie::CheckHit()
 			Health -= Player->Crowbar->Damage;
 			Player->Crowbar->Hit();
 		}
+	}
+}
+
+void Zombie::CheckPlayerHit()
+{
+	if (CheckCollisions())
+	{
+		MoveToWaypoint = false;
+		GoingAfterPlayer = false;
+		HitPlayer = true;
+		Velocity = { 0.0f, 0.0f, 0.0f };
+	}
+	else if (HitPlayer)
+	{
+		HitPlayer = false;
+		MoveToWaypoint = true;
 	}
 }

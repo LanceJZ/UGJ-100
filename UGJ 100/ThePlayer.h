@@ -17,6 +17,7 @@ public:
 	int HighScore { 0 };
 	int Lives { 0 };
 	int HP { 100 };
+	int MaxHP { 100 };
 
 	std::vector<Shot*> Shots = {};
 	TheCrowbar* Crowbar = nullptr;
@@ -24,6 +25,7 @@ public:
 	void SetParticleManager(ParticleManager* particleManager);
 	void SetWalls(std::vector<Entity*> walls);
 	void SetCrowbarModel(Model crowbarModel);
+	void SetCubeModel(Model cubeModel);
 
 	bool Initialize(Utilities* utilities);
 	bool BeginRun();
@@ -33,6 +35,7 @@ public:
 	void Draw3D();
 
 	void Hit();
+	void Hit(float damage);
 	void Hit(Vector3 location, Vector3 velocity);
 	void ScoreUpdate(int addToScore);
 	void Reset();
@@ -41,10 +44,15 @@ public:
 private:
 	bool MoveForwardPressed = false;
 
+	size_t HitTimerID = 0;
+
 	int NextNewLifeScore = 10000;
 
+	Model CubeModel = {};
 	ParticleManager* Particles = {};
 	std::vector<Entity*> Walls = {};
+	Model3D* HealthBar = nullptr;
+	Model3D* HealthBarBackground = nullptr;
 
 	void Dead();
 	void Gamepad();

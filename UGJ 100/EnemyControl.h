@@ -14,6 +14,7 @@ public:
 
 	void SetPlayer(ThePlayer* player);
 	void SetParticleManager(ParticleManager* particles);
+	void SetShotModel(Model model);
 	void SetZombieModel(Model zombieModel);
 	void SetWalls(std::vector<Entity*> walls);
 
@@ -26,6 +27,7 @@ public:
 	void NewGame();
 
 private:
+	Model ShotModel = {};
 	Model ZombieModel = {};
 
 	std::vector<Entity*> Walls;
